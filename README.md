@@ -27,9 +27,11 @@
 
 ```
 cmd/
+  hitalent-test-task — точка входа в приложение
   migrator/          — сервис миграций
 
 internal/
+  config/            — загрузка конфигураций
   app/               — запуск приложения
   http/              — HTTP обработчики и request/response структуры
   service/           — бизнес-логика
@@ -37,11 +39,12 @@ internal/
   domain/models/     — модели
 
 migrations/          — SQL миграции goose
+pkg/                 — инициализация БД
 ```
 
 ---
 
-# 🚀 Запуск проекта
+#  Запуск проекта
 
 ## 1. Клонировать репозиторий
 
@@ -87,14 +90,12 @@ migrator
 
 ```
 goose: no migrations to run
-migrations applied successfully
+migrations applied successfully!
 ```
 
 ---
 
 # API
-
-##  Department API
 
 ### Создать департамент
 
@@ -104,11 +105,26 @@ POST /departments
 
 ```json
 {
-  "name": "Backend",
+  "name": "kitchen",
   "parent_id": 1
 }
 ```
 
+---
+
+### Создать сотрудника
+
+```http
+POST /departments/{id}/employees
+```
+
+```json
+{
+  "full_name": "John Doe",
+  "position": "Engineer",
+  "hired_at": "2026-06-01"
+}
+```
 ---
 
 ### Получить департамент (дерево)
@@ -148,27 +164,10 @@ DELETE /departments/{id}?mode=cascade
 DELETE /departments/{id}?mode=reassign&reassign_to_department_id=2
 ```
 
----
-
-##  Employee API
-
-### Создать сотрудника
-
-```http
-POST /departments/{id}/employees
-```
-
-```json
-{
-  "full_name": "John Doe",
-  "position": "Engineer",
-  "hired_at": "2026-06-01"
-}
-```
 
 ---
 
-# 🧠 Бизнес-правила
+#  Бизнес-правила
 
 ## Department
 
@@ -197,18 +196,6 @@ POST /departments/{id}/employees
 ### reassign
 - сотрудники переводятся в другой департамент
 - затем департамент удаляется
-
----
-
-#  База данных
-
-```
-host: db
-port: 5432
-db: app
-user: user
-password: password
-```
 
 ---
 
